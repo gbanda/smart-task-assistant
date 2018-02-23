@@ -15,6 +15,10 @@ public class TasksContainerResponse implements TasksResponse {
     @JsonProperty("results")
     List<BasicTask> basicTasks;
 
+    public List<BasicTask> getBasicTasks() {
+        return basicTasks;
+    }
+
     @Override
     public List<Task> getTasks() {
         return null;

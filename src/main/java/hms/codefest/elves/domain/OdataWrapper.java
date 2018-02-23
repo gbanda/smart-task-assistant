@@ -2,7 +2,8 @@ package hms.codefest.elves.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import hms.codefest.elves.connector.TasksContainerResponse;
+import com.fasterxml.jackson.annotation.JsonRootName;
+import hms.codefest.elves.connector.DigestResponse;
 
 /**
  * <p></p>
@@ -10,17 +11,18 @@ import hms.codefest.elves.connector.TasksContainerResponse;
  * @author prabath.
  */
 
-@JsonIgnoreProperties
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonRootName("d")
 public class OdataWrapper {
 
-    @JsonProperty("d")
-    private TasksContainerResponse tasksContainerResponse;
+    @JsonProperty("GetContextWebInformation")
+    private DigestResponse digestResponse;
 
-    public TasksContainerResponse getTasksContainerResponse() {
-        return tasksContainerResponse;
+    public DigestResponse getDigestResponse() {
+        return digestResponse;
     }
 
-    public void setTasksContainerResponse(TasksContainerResponse tasksContainerResponse) {
-        this.tasksContainerResponse = tasksContainerResponse;
+    public void setDigestResponse(DigestResponse digestResponse) {
+        this.digestResponse = digestResponse;
     }
 }
