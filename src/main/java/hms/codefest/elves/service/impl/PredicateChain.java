@@ -1,5 +1,6 @@
 package hms.codefest.elves.service.impl;
 
+import hms.codefest.elves.domain.BasicTask;
 import hms.codefest.elves.domain.Task;
 import hms.codefest.elves.service.TaskUpdateEligibilityPredicate;
 
@@ -21,7 +22,7 @@ public class PredicateChain implements TaskUpdateEligibilityPredicate {
     }
 
     @Override
-    public boolean test(Task task) {
+    public boolean test(BasicTask task) {
         return predicates.size() == 0 || predicates.stream().allMatch(predicate -> predicate.test(task));
     }
 }

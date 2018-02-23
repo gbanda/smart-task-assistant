@@ -36,8 +36,7 @@ public class MessagingApplication {
 
     @EventMapping
     public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
-//        messageReceiver.onMessageReceive(event.getMessage().getText(),
-//                userRepo.findUserById(event.getSource().getUserId()).getUserName());
-        textMessageSender.pushMessage("Hi all", "aroshar");
+        messageReceiver.onMessageReceive(event.getMessage().getText(),
+                userRepo.findUserById(event.getSource().getUserId()).getUserName());
     }
 }

@@ -79,7 +79,7 @@ public class DefaultTasksRequest implements TasksRequest {
 
         private String userPassword;
 
-        private Builder() {
+        public Builder() {
         }
 
         public DefaultTasksRequest build() {

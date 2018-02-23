@@ -1,5 +1,6 @@
 package hms.codefest.elves.service.impl;
 
+import hms.codefest.elves.domain.BasicTask;
 import hms.codefest.elves.domain.Task;
 import hms.codefest.elves.service.TaskProcessingScheduler;
 import hms.codefest.elves.service.TasksProcessingService;
@@ -36,7 +37,7 @@ public class DefaultTaskProcessingScheduler implements TaskProcessingScheduler {
         init();
         executor.submit(() -> {
             logger.info("Executing the task processing schedule.");
-            List<Task> availableTaskList = null;
+            List<BasicTask> availableTaskList = null;
             try {
                 availableTaskList = taskService.getAvailableTaskList();
             } catch (ExecutionException | InterruptedException e) {
@@ -47,12 +48,12 @@ public class DefaultTaskProcessingScheduler implements TaskProcessingScheduler {
             if (logger.isDebugEnabled()) {
                 logger.debug("Task list : [{}]", availableTaskList);
             }
-            List<Task> candidates = taskService.extractUpdateEligibleTasks(availableTaskList);
+            List<BasicTask> candidates = taskService.extractUpdateEligibleTasks(availableTaskList);
             logger.info("Found [{}] candidate tasks for viber message sending, submitting to connector.", availableTaskList.size());
             if (logger.isDebugEnabled()) {
                 logger.debug("Task list : [{}]", availableTaskList);
             }
-            candidates.forEach(t -> taskService.submitTaskToViberMessage(t));
+            candidates.forEach(t -> taskService.submitTaskToLineMessage(t));
             logger.info("Execution of the task processing schedule completed successfully.");
         });
     }
