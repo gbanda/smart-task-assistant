@@ -25,4 +25,6 @@
           p:taskService-ref="taskService"
           p:interval="${tasks.processing.interval}"
           p:threadPoolSize="5"/>
+
+    <bean id="userRepo" class="hms.codefest.elves.data.UserRepo" init-method="init"/>
 </beans>
