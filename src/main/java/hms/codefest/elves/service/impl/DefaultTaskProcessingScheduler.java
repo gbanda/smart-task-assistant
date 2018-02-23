@@ -40,6 +40,7 @@ public class DefaultTaskProcessingScheduler implements TaskProcessingScheduler {
             List<BasicTask> availableTaskList = null;
             try {
                 availableTaskList = taskService.getAvailableTaskList();
+                System.out.println(availableTaskList);
             } catch (ExecutionException | InterruptedException e) {
                 logger.error("Error occurred while attempting to retrieve the available task list from the projects server.", e);
                 return;
@@ -49,11 +50,14 @@ public class DefaultTaskProcessingScheduler implements TaskProcessingScheduler {
                 logger.debug("Task list : [{}]", availableTaskList);
             }
             List<BasicTask> candidates = taskService.extractUpdateEligibleTasks(availableTaskList);
+            System.out.println(candidates);
             logger.info("Found [{}] candidate tasks for viber message sending, submitting to connector.", availableTaskList.size());
             if (logger.isDebugEnabled()) {
                 logger.debug("Task list : [{}]", availableTaskList);
             }
-            candidates.forEach(t -> taskService.submitTaskToLineMessage(t));
+            if (candidates.size() > 0) {
+                taskService.submitTaskToLineMessage(candidates.get(0));
+            }
             logger.info("Execution of the task processing schedule completed successfully.");
         });
     }

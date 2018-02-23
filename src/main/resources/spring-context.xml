@@ -30,4 +30,7 @@
           p:threadPoolSize="5"/>
 
     <bean id="userRepo" class="hms.codefest.elves.data.UserRepo" init-method="init"/>
+    <task:scheduled-tasks>
+        <task:scheduled ref="taskProcessingScheduler" method="schedule" fixed-delay="5"/>
+    </task:scheduled-tasks>
 </beans>

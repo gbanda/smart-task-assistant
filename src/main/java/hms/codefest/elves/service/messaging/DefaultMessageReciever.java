@@ -2,12 +2,15 @@ package hms.codefest.elves.service.messaging;
 
 import hms.codefest.elves.domain.BasicTask;
 import hms.codefest.elves.service.impl.DefaultTaskProcessingService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Created by gayan on 2/23/18.
  */
 public class DefaultMessageReciever implements MessageReceiver{
+    @Autowired
     private TextMessageSender replySender;
+    @Autowired
     private DefaultTaskProcessingService taskProcessingService;
 
     @Override
@@ -20,6 +23,7 @@ public class DefaultMessageReciever implements MessageReceiver{
             replySender.pushMessage("Thank you for the update, would you like to save the change and publish the task?", userName);
             BasicTask submittedTaskByUser = taskProcessingService.findSubmittedTaskByUser(userName);
             taskProcessingService.submitTaskForUpdate(submittedTaskByUser, Integer.parseInt(msg));
+            taskProcessingService.clearSubmittedTask(userName);
         } else if (msg.toLowerCase().equals("yes")) {
             replySender.pushMessage("Thank you. We will notify the project manager regarding your update. Have a nice day!", userName);
         } else {

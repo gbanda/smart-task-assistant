@@ -41,11 +41,18 @@ public class DefaultTaskProcessingService implements TasksProcessingService {
 
     @Override
     public boolean submitTaskToLineMessage(BasicTask task) {
+        if (tasksSubmittedForUserResponse.get("aroshar") != null) {
+            return false;
+        }
         String message = "The task assigned to you on project 'Smart Task Manager' with title 'Implement project manager notifications " +
                 "on assignee updates' to commenced on " + task.getStartDate().toString() + "is pending status update. Reply with the current " +
                 "completed percentage or any message you would like to save as the reply?";
         tasksSubmittedForUserResponse.put("aroshar", task);
         return lineMessageSender.pushMessage(message, "aroshar");
+    }
+
+    public void clearSubmittedTask(String user) {
+        tasksSubmittedForUserResponse.remove(user);
     }
 
     @Override
