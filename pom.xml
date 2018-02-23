@@ -10,6 +10,13 @@
     <name>task-assistant</name>
     <url>http://maven.apache.org</url>
 
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.5.10.RELEASE</version>
+        <relativePath/>
+    </parent>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -33,10 +40,87 @@
             <version>2.9.0</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-            <version>4.2.1.RELEASE</version>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>2.25.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-json-jackson</artifactId>
+            <version>2.25.1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.glassfish.jersey.connectors/jersey-apache-connector -->
+        <dependency>
+            <groupId>org.glassfish.jersey.connectors</groupId>
+            <artifactId>jersey-apache-connector</artifactId>
+            <version>2.22.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>3.8.1</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.linecorp.bot/line-bot-spring-boot -->
+        <dependency>
+            <groupId>com.linecorp.bot</groupId>
+            <artifactId>line-bot-spring-boot</artifactId>
+            <version>1.15.0</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.linecorp.bot/line-bot-model -->
+        <dependency>
+            <groupId>com.linecorp.bot</groupId>
+            <artifactId>line-bot-model</artifactId>
+            <version>1.15.0</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.linecorp.bot/line-bot-model -->
+        <dependency>
+            <groupId>com.linecorp.bot</groupId>
+            <artifactId>line-bot-model</artifactId>
+            <version>1.15.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.9.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.9.0</version>
+        </dependency>
+
         <dependency>
             <groupId>org.glassfish.jersey.core</groupId>
             <artifactId>jersey-client</artifactId>
@@ -47,47 +131,17 @@
             <artifactId>jersey-media-json-jackson</artifactId>
             <version>2.25.1</version>
         </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <version>4.2.1.RELEASE</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.glassfish.jersey.connectors/jersey-apache-connector -->
+
         <dependency>
             <groupId>org.glassfish.jersey.connectors</groupId>
             <artifactId>jersey-apache-connector</artifactId>
             <version>2.22.2</version>
         </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-            <version>2.5.2</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.5.2</version>
-        </dependency>
-
-<!--
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.5.5</version>
-        </dependency>
--->
 
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.8.2</version>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>3.8.1</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -102,7 +156,7 @@
         </repository>
     </repositories>
 
-    <build>
+    <!--<build>
         <finalName>task-assistant</finalName>
         <resources>
             <resource>
@@ -128,10 +182,10 @@
                 <version>1.9</version>
                 <configuration>
                     <generateRepository>true</generateRepository>
-                    <!--<repoPath>lib</repoPath>-->
+                    &lt;!&ndash;<repoPath>lib</repoPath>&ndash;&gt;
                     <repositoryLayout>flat</repositoryLayout>
                     <includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
-                    <!--<assembleDirectory>${project.build.directory}/jsw/babel</assembleDirectory>-->
+                    &lt;!&ndash;<assembleDirectory>${project.build.directory}/jsw/babel</assembleDirectory>&ndash;&gt;
                     <showConsoleWindow>true</showConsoleWindow>
                     <configurationDirectory>conf</configurationDirectory>
                     <defaultJvmSettings>
@@ -257,5 +311,5 @@
                 </executions>
             </plugin>
         </plugins>
-    </build>
+    </build>-->
 </project>

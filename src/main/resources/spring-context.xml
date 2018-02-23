@@ -18,11 +18,11 @@
     </bean>
     <bean id="taskService" class="hms.codefest.elves.service.impl.DefaultTaskProcessingService"
           p:predicate-ref="predicate"
-          p:projectsServerConnector-ref="projectsServerConnector"-->
-    p:viberConnector-ref="viberConector"/>
+          p:projectsServerConnector-ref="projectsServerConnector"
+          p:viberConnector-ref="viberConector"/>
 
     <bean id="taskProcessingScheduler" class="hms.codefest.elves.service.impl.DefaultTaskProcessingScheduler"
           p:taskService-ref="taskService"
           p:interval="${tasks.processing.interval}"
-          p:threadPoolSize=""/>
+          p:threadPoolSize="5"/>
 </beans>
