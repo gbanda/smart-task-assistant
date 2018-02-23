@@ -1,0 +1,18 @@
+### Maven template
+target/
+
+###idea template
+*.iml
+.idea
+
+### eclipse templete
+reporting/.classpath
+reporting/.project
+reporting/.settings/
+birt-runtime-4_4_1/
+
+###other
+logs/
+documents/
+*.logs
+/bin/
