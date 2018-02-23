@@ -93,13 +93,62 @@ public class ProjectsServerConnectorImpl implements ProjectsServerConnector {
             return null;
         }
         BasicUpdateTaskRequest updateTaskRequest = (BasicUpdateTaskRequest) request;
-        String updatedUrl = updateTaskRequest.getAssignmentUrl().replaceFirst("Assignment", "Draft\\Assignment");
-        WebTarget updateTaskWebPath = projectsServerWebTarget.path(request.getRequestPath());
-        Invocation.Builder invocationBuilder = updateTaskWebPath.request(MediaType.APPLICATION_XML);
-        Invocation invocation = invocationBuilder.build("patch", Entity.entity(request, MediaType.APPLICATION_XML));
-        UpdateTaskResponse response = invocation.invoke(UpdateTaskResponse.class);
-        //todo validate the received response and set the response status
-        return response;
+        checkOut(updateTaskRequest);
+        updateTask(updateTaskRequest);
+        publishTask(updateTaskRequest);
+        return new BasicUpdateTaskResponse(true);
+    }
+
+    private boolean publishTask(BasicUpdateTaskRequest updateTaskRequest) {
+
+        String digest = getDigest(updateTaskRequest);
+        Client client = ClientBuilder
+                .newClient(prepareClientConfig(updateTaskRequest.getAdminUsername(), updateTaskRequest.getAdminPassword()));
+        WebTarget target = client
+                .target("http://projectserver/PWA/_api")
+                .path("ProjectServer/Projects('" + updateTaskRequest.getProjectId() + "')/Draft/Publish(true)");
+        String checkoutResponse = target.request().accept(MediaType.APPLICATION_JSON_TYPE).header("X-RequestDigest", digest)
+                .header("Content-Type", MediaType.APPLICATION_JSON_TYPE + ";odata=verbose").post(Entity.json(null), String.class);
+        return true;
+    }
+
+    private boolean updateTask(BasicUpdateTaskRequest updateTaskRequest) {
+        String digest = getDigest(updateTaskRequest);
+        String updatedUrl = updateTaskRequest.getAssignmentUrl().replaceFirst("Assignment", "Draft/Assignment");
+        Client client = ClientBuilder
+                .newClient(prepareClientConfig(updateTaskRequest.getAdminUsername(), updateTaskRequest.getAdminPassword()));
+        int updatedPercentage = updateTaskRequest.getUpdatedPercentage();
+        String updateRequest = "{__metadata:{type:PS.DraftAssignment}, PercentWorkComplete: " + updatedPercentage + "}";
+        String checkoutResponse =
+                client.target(updatedUrl).request().accept(MediaType.APPLICATION_JSON_TYPE).header("X-RequestDigest", digest)
+                        .header("Content-Type", MediaType.APPLICATION_JSON_TYPE + ";odata=verbose")
+                        .method("patch", Entity.json(updateRequest), String.class);
+        return true;
+    }
+
+    private boolean checkOut(BasicUpdateTaskRequest updateTaskRequest) {
+        String digest = getDigest(updateTaskRequest);
+        Client client = ClientBuilder
+                .newClient(prepareClientConfig(updateTaskRequest.getAdminUsername(), updateTaskRequest.getAdminPassword()));
+        WebTarget target = client
+                .target("http://projectserver/PWA/_api")
+                .path("ProjectServer/Projects('" + updateTaskRequest.getProjectId() + "')");
+        String checkoutResponse = target.request().accept(MediaType.APPLICATION_JSON_TYPE).header("X-RequestDigest", digest)
+                .header("Content-Type", MediaType.APPLICATION_JSON_TYPE).post(Entity.json(null), String.class);
+        return true;
+    }
+
+    private String getDigest(BasicUpdateTaskRequest updateTaskRequest) {
+        Client client = ClientBuilder
+                .newClient(prepareClientConfig(updateTaskRequest.getAdminUsername(), updateTaskRequest.getAdminPassword()));
+        WebTarget target = client
+                .target("http://projectserver/PWA/_api")
+                .path("contextinfo");
+        DigestResponse digestResponse = target.request().accept(MediaType.APPLICATION_JSON_TYPE + ";odata=verbose")
+                .post(Entity.json(null), DigestResponse.class);
+
+        return digestResponse.getDigest();
+
     }
 
     public void destroy() {
