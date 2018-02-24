@@ -6,6 +6,7 @@ import hms.codefest.elves.domain.Task;
 import hms.codefest.elves.service.TaskUpdateEligibilityPredicate;
 import hms.codefest.elves.service.TasksProcessingService;
 import hms.codefest.elves.service.messaging.MessageSender;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 public class DefaultTaskProcessingService implements TasksProcessingService {
     private TaskUpdateEligibilityPredicate predicate;
     private ProjectsServerConnector projectsServerConnector;
+    @Autowired
     private MessageSender lineMessageSender;
     private Map<String, BasicTask> tasksSubmittedForUserResponse = new HashMap<>();
 

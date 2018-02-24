@@ -16,21 +16,20 @@
     <bean id="projectsServerConnector" class="hms.codefest.elves.connector.impl.ProjectsServerConnectorImpl" init-method="init" destroy-method="destroy">
         <property name="targetUrl" value="${projects.server.target.url}"/>
     </bean>
-    <bean id="lineMessageSender" class="hms.codefest.elves.service.messaging.TextMessageSender"/>
+    <!--<bean id="lineMessageSender" class="hms.codefest.elves.service.messaging.TextMessageSender"/>-->
     <bean id="taskService" class="hms.codefest.elves.service.impl.DefaultTaskProcessingService"
           p:predicate-ref="predicate"
-          p:projectsServerConnector-ref="projectsServerConnector"
-          p:lineMessageSender-ref="lineMessageSender"/>
+          p:projectsServerConnector-ref="projectsServerConnector"/>
 
     <bean id="messageReceiver" class="hms.codefest.elves.service.messaging.DefaultMessageReciever"/>
 
-    <bean id="taskProcessingScheduler" class="hms.codefest.elves.service.impl.DefaultTaskProcessingScheduler"
+    <bean id="taskProcessingScheduler" class="hms.codefest.elves.service.impl.DefaultTaskProcessingScheduler" init-method="schedule"
           p:taskService-ref="taskService"
           p:interval="${tasks.processing.interval}"
           p:threadPoolSize="5"/>
 
     <bean id="userRepo" class="hms.codefest.elves.data.UserRepo" init-method="init"/>
-    <task:scheduled-tasks>
-        <task:scheduled ref="taskProcessingScheduler" method="schedule" fixed-delay="5"/>
-    </task:scheduled-tasks>
+    <!--<task:scheduled-tasks>
+        <task:scheduled ref="taskProcessingScheduler" method="schedule" fixed-delay="30"/>
+    </task:scheduled-tasks>-->
 </beans>

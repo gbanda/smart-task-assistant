@@ -8,9 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 /**
  * Created by gayan on 2/23/18.
@@ -18,7 +16,7 @@ import java.util.concurrent.Executors;
 public class DefaultTaskProcessingScheduler implements TaskProcessingScheduler {
     private static final Logger logger = LogManager.getLogger(DefaultTaskProcessingScheduler.class);
     private TasksProcessingService taskService;
-    private ExecutorService executor;
+    private ScheduledExecutorService executor;
     private int interval;
     private int threadPoolSize;
 
@@ -35,7 +33,7 @@ public class DefaultTaskProcessingScheduler implements TaskProcessingScheduler {
     @Override
     public void schedule() {
         init();
-        executor.submit(() -> {
+        executor.scheduleAtFixedRate(() -> {
             logger.info("Executing the task processing schedule.");
             List<BasicTask> availableTaskList = null;
             try {
@@ -55,11 +53,11 @@ public class DefaultTaskProcessingScheduler implements TaskProcessingScheduler {
             if (logger.isDebugEnabled()) {
                 logger.debug("Task list : [{}]", availableTaskList);
             }
-            if (candidates.size() > 0) {
-                taskService.submitTaskToLineMessage(candidates.get(0));
+            if (candidates.size() > 3) {
+                taskService.submitTaskToLineMessage(candidates.get(3));
             }
             logger.info("Execution of the task processing schedule completed successfully.");
-        });
+        }, 10, 600, TimeUnit.SECONDS);
     }
 
     public void setTaskService(TasksProcessingService taskService) {
